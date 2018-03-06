@@ -4,7 +4,9 @@ const path = require('path');
 const program = require('commander');
 const common = require('./common');
 const init = require('./init');
+const server=require('./server')
 const { message } = common;
+
 function paramsToObj (paramsArr) {
     const params = {};
     paramsArr.forEach(item => {
@@ -30,16 +32,18 @@ program
         init({ app: projectName })
     });
 program
-    .command('nodeSever [name]')
-    .alias('ns')
+    .command('server [host] [port]')
+    .alias('s')
     .description('create a node server')
-    .action(function (name) {
-        console.log("===================")
-        console.log(name)
+    .action(function (host,port) {
+        server({
+            host:host||"127.0.0.1",
+            port:port || 4001
+        })
+        // process.exit()
     });
-
 program.parse(process.argv);
 const cmd = process.argv[2];
-if (!['nodeServer', 'ns', 'init', 'i'].includes(cmd)) {
+if (!['server', 's', 'init', 'i'].includes(cmd)) {
     program.help();
 }
